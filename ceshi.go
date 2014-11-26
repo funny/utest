@@ -13,26 +13,41 @@ import (
 	"time"
 )
 
-var failRegexp, _ = regexp.Compile(`^\s*ceshi.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+var passRegexp, _ = regexp.Compile(`^\s*ceshi.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
 
 func Pass(t *testing.T, condition bool) {
 	if !condition {
-		if _, file, line, ok := runtime.Caller(1); ok {
-			if data, err := ioutil.ReadFile(file); err == nil {
-				// Truncate file name at last file name separator.
-				if index := strings.LastIndex(file, "/"); index >= 0 {
-					file = file[index+1:]
-				} else if index = strings.LastIndex(file, "\\"); index >= 0 {
-					file = file[index+1:]
-				}
-				lines := bytes.Split(data, []byte{'\n'})
-				cond := failRegexp.FindAllSubmatch(lines[line-1], 1)
-				if len(cond) > 0 && len(cond[0]) > 1 {
-					fmt.Fprintf(os.Stderr, "\t[NOT PASS] %s:%d: %s\n", file, line, cond[0][1])
+		log("[NOT PSSS]", passRegexp, "")
+		t.FailNow()
+	}
+}
+
+func NotError(t *testing.T, err error) {
+	if err != nil {
+		log("[ERROR]", nil, err.Error())
+		t.FailNow()
+	}
+}
+
+func log(title string, regex *regexp.Regexp, val string) {
+	if _, file, line, ok := runtime.Caller(2); ok {
+		if data, err := ioutil.ReadFile(file); err == nil {
+			// Truncate file name at last file name separator.
+			if index := strings.LastIndex(file, "/"); index >= 0 {
+				file = file[index+1:]
+			} else if index = strings.LastIndex(file, "\\"); index >= 0 {
+				file = file[index+1:]
+			}
+			lines := bytes.Split(data, []byte{'\n'})
+			cond := regex.FindAllSubmatch(lines[line-1], 1)
+			if len(cond) > 0 && len(cond[0]) > 1 {
+				if val == "" {
+					fmt.Fprintf(os.Stderr, "\t%s %s:%d: %s\n", title, file, line, cond[0][1])
+				} else {
+					fmt.Fprintf(os.Stderr, "\t%s %s:%d: %s: %s\n", title, file, line, cond[0][1], val)
 				}
 			}
 		}
-		t.FailNow()
 	}
 }
 
