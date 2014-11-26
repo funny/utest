@@ -60,7 +60,7 @@ func StartMonitor(cmdCallback func(string) bool) {
 					profile = pprof.Lookup("threadcreate")
 					filename = "ceshi.thread"
 				default:
-					if !cmdCallback(cmd) {
+					if cmdCallback == nil || !cmdCallback(cmd) {
 						println("unknow command: '" + cmd + "'")
 					}
 				}
