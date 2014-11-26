@@ -13,7 +13,10 @@ import (
 	"time"
 )
 
-var passRegexp, _ = regexp.Compile(`^\s*ceshi.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+var (
+	passRegexp, _     = regexp.Compile(`^\s*ceshi.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+	notErrorRegexp, _ = regexp.Compile(`^\s*ceshi.NotError\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+)
 
 func Pass(t *testing.T, condition bool) {
 	if !condition {
@@ -24,7 +27,7 @@ func Pass(t *testing.T, condition bool) {
 
 func NotError(t *testing.T, err error) {
 	if err != nil {
-		log("[ERROR]", nil, err.Error())
+		log("[ERROR]", notErrorRegexp, err.Error())
 		t.FailNow()
 	}
 }
