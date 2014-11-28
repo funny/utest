@@ -1,4 +1,4 @@
-package ceshi
+package unitest
 
 import (
 	"bytes"
@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	passRegexp, _     = regexp.Compile(`^\s*ceshi\.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
-	notErrorRegexp, _ = regexp.Compile(`^\s*ceshi\.NotError\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+	passRegexp, _     = regexp.Compile(`^\s*unitest\.Pass\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
+	notErrorRegexp, _ = regexp.Compile(`^\s*unitest\.NotError\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
 )
 
 func Pass(t *testing.T, condition bool) {
@@ -54,11 +54,14 @@ func log(title string, regex *regexp.Regexp, val string) {
 	}
 }
 
-func StartMonitor(cmdCallback func(string) bool) {
+// Command handler
+var CommandHandler func(string) bool
+
+func init() {
 	go func() {
 		for {
-			if input, err := ioutil.ReadFile("ceshi.cmd"); err == nil && len(input) > 0 {
-				ioutil.WriteFile("ceshi.cmd", []byte(""), 0744)
+			if input, err := ioutil.ReadFile("unitest.cmd"); err == nil && len(input) > 0 {
+				ioutil.WriteFile("unitest.cmd", []byte(""), 0744)
 
 				cmd := strings.Trim(string(input), " \n\r\t")
 
@@ -70,15 +73,15 @@ func StartMonitor(cmdCallback func(string) bool) {
 				switch cmd {
 				case "lookup goroutine":
 					profile = pprof.Lookup("goroutine")
-					filename = "ceshi.goroutine"
+					filename = "unitest.goroutine"
 				case "lookup heap":
 					profile = pprof.Lookup("heap")
-					filename = "ceshi.heap"
+					filename = "unitest.heap"
 				case "lookup threadcreate":
 					profile = pprof.Lookup("threadcreate")
-					filename = "ceshi.thread"
+					filename = "unitest.thread"
 				default:
-					if cmdCallback == nil || !cmdCallback(cmd) {
+					if CommandHandler == nil || !CommandHandler(cmd) {
 						println("unknow command: '" + cmd + "'")
 					}
 				}
