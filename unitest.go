@@ -18,18 +18,20 @@ var (
 	notErrorRegexp, _ = regexp.Compile(`^\s*unitest\.NotError\s*\(\s*[^,]+\s*,\s*(.+)\s*\)\s*$`)
 )
 
-func Pass(t *testing.T, condition bool) {
+func Pass(t *testing.T, condition bool) bool {
 	if !condition {
 		log("[NOT PSSS]", passRegexp, "")
 		t.FailNow()
 	}
+	return condition
 }
 
-func NotError(t *testing.T, err error) {
+func NotError(t *testing.T, err error) bool {
 	if err != nil {
 		log("[ERROR]", notErrorRegexp, err.Error())
 		t.FailNow()
 	}
+	return err != nil
 }
 
 func log(title string, regex *regexp.Regexp, val string) {
