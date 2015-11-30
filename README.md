@@ -68,19 +68,19 @@ func VerifyBuffer(t *testing.T, buffer InBuffer) {
 
 ```go
 func VerifyBuffer(t *testing.T, buffer InBuffer) {
-	unitest.Pass(t, buffer.ReadByte() == 99)
-	unitest.Pass(t, buffer.ReadInt8() == -2)
-	unitest.Pass(t, buffer.ReadUint8() == 1)
-	unitest.Pass(t, buffer.ReadInt16() == 0x7FEE)
-	unitest.Pass(t, buffer.ReadUint16() == 0xFFEE)
-	unitest.Pass(t, buffer.ReadInt32() == 0x7FEEDDCC)
-	unitest.Pass(t, buffer.ReadUint32() == 0xFFEEDDCC)
-	unitest.Pass(t, buffer.ReadInt64() == 0x7FEEDDCCBBAA9988)
-	unitest.Pass(t, buffer.ReadUint64() == 0xFFEEDDCCBBAA9988)
-	unitest.Pass(t, buffer.ReadRune() == '好')
-	unitest.Pass(t, buffer.ReadString(6) == "Hello1")
-	unitest.Pass(t, bytes.Equal(buffer.ReadBytes(6), []byte("Hello2")))
-	unitest.Pass(t, bytes.Equal(buffer.ReadSlice(6), []byte("Hello3")))
+	unitest.CheckByte(t, buffer.ReadByte(), "==", 99)
+	unitest.CheckInt8(t, buffer.ReadInt8(), "==", -2)
+	unitest.CheckUint8(t, buffer.ReadUint8(), "==", 1)
+	unitest.CheckInt16(t, buffer.ReadInt16(), "==", 0x7FEE)
+	unitest.CheckUint16(t, buffer.ReadUint16(), "==", 0xFFEE)
+	unitest.CheckInt32(t, buffer.ReadInt32(), "==", 0x7FEEDDCC)
+	unitest.CheckUint32(t, buffer.ReadUint32(), "==", 0xFFEEDDCC)
+	unitest.CheckInt64(t, buffer.ReadInt64(), "==", 0x7FEEDDCCBBAA9988)
+	unitest.CheckUint64(t, buffer.ReadUint64(), "==", 0xFFEEDDCCBBAA9988)
+	unitest.CheckRune(t, buffer.ReadRune(), '好')
+	unitest.CheckString(t, buffer.ReadString(6), "Hello1")
+	unitest.CheckBytes(t, buffer.ReadBytes(6), []byte("Hello2"))
+	unitest.CheckBytes(t, buffer.ReadSlice(6), []byte("Hello3"))
 }
 ```
 
