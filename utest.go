@@ -159,7 +159,7 @@ func equal(t *testing.T, a, b interface{}, f func()) bool {
 	case int64:
 		ok = va == int64Val(b)
 	case uint:
-		ok = va == b.(uint)
+		ok = uint64(va) == uint64Val(b)
 	case uint8:
 		ok = va == uint8Val(b)
 	case uint16:
