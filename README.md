@@ -124,9 +124,7 @@ exit status 1
 FAIL	vendor/github.com/funny/utest	0.006s
 ```
 
-如果单纯靠testing包做单元测试，就需要加判断和打印来做到。
-
-utest的每个测试方法都有对应的一个Now结尾的版本，带Now结尾的版本在测试失败时会立即终止当期测试用例的执行，不带Now的版本则会继续测试后续内容。
+如果单纯靠testing包做单元测试，就需要加判断和打印才能做到。
 
 utest支持以下几种测试检查：
 
