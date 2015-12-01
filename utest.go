@@ -332,8 +332,8 @@ func float64Val(b interface{}) float64 {
 }
 
 func unsafeEqual(ia, ib interface{}, size int) bool {
-	a := (*reflect.SliceHeader)(unsafe.Pointer((*(*[2]uintptr)(unsafe.Pointer(&ia)))[1]))
-	b := (*reflect.SliceHeader)(unsafe.Pointer((*(*[2]uintptr)(unsafe.Pointer(&ib)))[1]))
+	a := (*reflect.SliceHeader)((*(*[2]unsafe.Pointer)(unsafe.Pointer(&ia)))[1])
+	b := (*reflect.SliceHeader)((*(*[2]unsafe.Pointer)(unsafe.Pointer(&ib)))[1])
 	return bytes.Equal(
 		*(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
 			Data: a.Data,

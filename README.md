@@ -145,11 +145,14 @@ utest.IsNilNow(t, v)
 utest.NotNil(t, v)
 utest.NotNilNow(t, v)
 
+//
 // 断言a和b必须相等，此函数只支持以下数据类型：
 //   int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, rune, byte, string, []byte
 //   []int, []int8, []int16, []int32, []int64, []uint, []uint8, []uint16, []uint32, []uint64, []rune
 // 或者实现了utest.Equals接口的自定义类型。
-// 当为简单类型时，a和b必须是同类型，只有当b为int类型常量时，函数内部才会尝试做类型转换。
+// 当为简单类型时，a和b必须是同类型，只有当b为int类型时，函数内部才会尝试做类型转换，这个设计是为了适应常量值的用法：
+//   utest.Equal(t, GetUint64(), 123)
+//
 utest.Equal(t, a, b)
 utest.EqualNow(t, a, b)
 
