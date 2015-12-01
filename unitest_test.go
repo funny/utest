@@ -1,4 +1,4 @@
-package unitest
+package utest
 
 import (
 	"io"
@@ -6,14 +6,15 @@ import (
 )
 
 func Test_All(t *testing.T) {
-	Check(t, false, 1, 2, 3)
-	CheckNotError(t, io.ErrClosedPipe)
-	CheckByte(t, 1, "==", 2)
-	CheckInt(t, 1, ">=", 2)
-	CheckInt64(t, 3, ">", 4)
-	CheckFloat32(t, 1.233, "==", 3.333)
-	CheckFloat64(t, 1.233, "==", 3.333)
-	CheckRune(t, '你', '好')
-	CheckString(t, "sadkfjsl", "sdfs*\r\n")
-	CheckBytes(t, []byte{1, 2, 3, 3}, []byte{3, 4, 5, 6})
+	Check(t, 1 > 2, 1, 2, 3)
+	IsNil(t, io.ErrClosedPipe)
+	Equal(t, 1, 2)
+	Equal(t, 1.233, 3.333)
+	Equal(t, '你', '好')
+	Equal(t, "sadkfjsl", "sdfs*\r\n")
+	Equal(t, []byte{1, 2, 3, 3}, []byte{3, 4, 5, 6})
+	Equal(t, []int{1, 2, 3}, []int{1, 2, 3})
+	Equal(t, []int{1, 2, 3}, []int{3, 4, 5})
+	DeepEqual(t, []int{1, 2, 3}, []int{3, 4, 5})
+	Equal(t, int32(100), 100)
 }

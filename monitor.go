@@ -1,4 +1,4 @@
-package unitest
+package utest
 
 import (
 	"io/ioutil"
@@ -14,8 +14,8 @@ var CommandHandler func(string) bool
 func init() {
 	go func() {
 		for {
-			if input, err := ioutil.ReadFile("unitest.cmd"); err == nil && len(input) > 0 {
-				ioutil.WriteFile("unitest.cmd", []byte(""), 0744)
+			if input, err := ioutil.ReadFile("utest.cmd"); err == nil && len(input) > 0 {
+				ioutil.WriteFile("utest.cmd", []byte(""), 0744)
 
 				cmd := strings.Trim(string(input), " \n\r\t")
 
@@ -27,13 +27,13 @@ func init() {
 				switch cmd {
 				case "lookup goroutine":
 					profile = pprof.Lookup("goroutine")
-					filename = "unitest.goroutine"
+					filename = "utest.goroutine"
 				case "lookup heap":
 					profile = pprof.Lookup("heap")
-					filename = "unitest.heap"
+					filename = "utest.heap"
 				case "lookup threadcreate":
 					profile = pprof.Lookup("threadcreate")
-					filename = "unitest.thread"
+					filename = "utest.thread"
 				default:
 					if CommandHandler == nil || !CommandHandler(cmd) {
 						println("unknow command: '" + cmd + "'")

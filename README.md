@@ -6,7 +6,7 @@
 工具接口
 =======
 
-以下先做一个简单对比，使用unitest库之前的单元测试如下：
+以下先做一个简单对比，使用utest库之前的单元测试如下：
 
 ```go
 func VerifyBuffer(t *testing.T, buffer InBuffer) {
@@ -64,49 +64,49 @@ func VerifyBuffer(t *testing.T, buffer InBuffer) {
 }
 ```
 
-使用unitest库重构后的单元测试如下：
+使用utest库重构后的单元测试如下：
 
 ```go
 func VerifyBuffer(t *testing.T, buffer InBuffer) {
-	unitest.CheckByte(t, buffer.ReadByte(), "==", 99)
-	unitest.CheckInt8(t, buffer.ReadInt8(), "==", -2)
-	unitest.CheckUint8(t, buffer.ReadUint8(), "==", 1)
-	unitest.CheckInt16(t, buffer.ReadInt16(), "==", 0x7FEE)
-	unitest.CheckUint16(t, buffer.ReadUint16(), "==", 0xFFEE)
-	unitest.CheckInt32(t, buffer.ReadInt32(), "==", 0x7FEEDDCC)
-	unitest.CheckUint32(t, buffer.ReadUint32(), "==", 0xFFEEDDCC)
-	unitest.CheckInt64(t, buffer.ReadInt64(), "==", 0x7FEEDDCCBBAA9988)
-	unitest.CheckUint64(t, buffer.ReadUint64(), "==", 0xFFEEDDCCBBAA9988)
-	unitest.CheckRune(t, buffer.ReadRune(), '好')
-	unitest.CheckString(t, buffer.ReadString(6), "Hello1")
-	unitest.CheckBytes(t, buffer.ReadBytes(6), []byte("Hello2"))
-	unitest.CheckBytes(t, buffer.ReadSlice(6), []byte("Hello3"))
+	utest.Equal(t, buffer.ReadByte(), 99)
+	utest.Equal(t, buffer.ReadInt8(), -2)
+	utest.Equal(t, buffer.ReadUint8(), 1)
+	utest.Equal(t, buffer.ReadInt16(), 0x7FEE)
+	utest.Equal(t, buffer.ReadUint16(), 0xFFEE)
+	utest.Equal(t, buffer.ReadInt32(), 0x7FEEDDCC)
+	utest.Equal(t, buffer.ReadUint32(), 0xFFEEDDCC)
+	utest.Equal(t, buffer.ReadInt64(), 0x7FEEDDCCBBAA9988)
+	utest.Equal(t, buffer.ReadUint64(), 0xFFEEDDCCBBAA9988)
+	utest.Equal(t, buffer.ReadRune(), '好')
+	utest.Equal(t, buffer.ReadString(6), "Hello1")
+	utest.Equal(t, buffer.ReadBytes(6), []byte("Hello2"))
+	utest.Equal(t, buffer.ReadSlice(6), []byte("Hello3"))
 }
 ```
 
-当以上单元测试判断失败时，unitest将自动从代码中提取对应行号的代码作为错误信息。
+当以上单元测试判断失败时，utest将自动从代码中提取对应行号的代码作为错误信息。
 
-在不牺牲单元测试结果输出的清晰性的前提下，unitest可以减少很多不必要的判断语句和错误信息。
+在不牺牲单元测试结果输出的清晰性的前提下，utest可以减少很多不必要的判断语句和错误信息。
 
 进程监控
 =======
 
 此外，在进行一些复杂的多线程单元测试的时候，可能出现死锁的情况，或者进行benchmark的时候，需要知道过程中内存的增长情况和GC情况。
 
-unitest为这些情况提供了一个统一的监控功能，在单元测试运行目录下使用以下方法可以获取到单元测试过程中的信息：
+utest为这些情况提供了一个统一的监控功能，在单元测试运行目录下使用以下方法可以获取到单元测试过程中的信息：
 
 ```shell
-echo 'lookup goroutine' > unitest.cmd
+echo 'lookup goroutine' > utest.cmd
 ```
 
-以上shell脚本将使unitest自动输出goroutine堆栈跟踪信息到`unitest.goroutine`文件。
+以上shell脚本将使utest自动输出goroutine堆栈跟踪信息到`utest.goroutine`文件。
 
-unitest支持以下几种监控命令：
+utest支持以下几种监控命令：
 
 ```
-lookup goroutine  -  获取当前所有goroutine的堆栈跟踪信息，输出到unitest.goroutine文件，用于排查死锁等情况
-lookup heap       -  获取当前内存状态信息，输出到unitest.heap文件，包含内存分配情况和GC暂停时间等
-lookup threadcreate - 获取当前线程创建信息，输出到unitest.thread文件，通常用来排查CGO的线程使用情况
+lookup goroutine  -  获取当前所有goroutine的堆栈跟踪信息，输出到utest.goroutine文件，用于排查死锁等情况
+lookup heap       -  获取当前内存状态信息，输出到utest.heap文件，包含内存分配情况和GC暂停时间等
+lookup threadcreate - 获取当前线程创建信息，输出到utest.thread文件，通常用来排查CGO的线程使用情况
 ```
 
-此外你还可以通过注册`unitest.CommandHandler`回调来添加自己的监控命令支持。
+此外你还可以通过注册`utest.CommandHandler`回调来添加自己的监控命令支持。
