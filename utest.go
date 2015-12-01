@@ -31,6 +31,10 @@ type toString interface {
 	String() string
 }
 
+type Equals interface {
+	Equals(interface{}) bool
+}
+
 func Check(t *testing.T, condition bool, args ...interface{}) bool {
 	return check(t, condition, "check", t.Fail, args...)
 }
@@ -192,6 +196,8 @@ func equal(t *testing.T, a, b interface{}, f func()) bool {
 		ok = unsafeEqual(a, b.([]float32), sizeOfFloat32)
 	case []float64:
 		ok = unsafeEqual(a, b.([]float64), sizeOfFloat64)
+	case Equals:
+		ok = va.Equals(b)
 	}
 	if ok {
 		return true
