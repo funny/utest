@@ -88,8 +88,7 @@ func isNil(t *testing.T, v interface{}, f func()) bool {
 		log(2, fmt.Sprintf(`not nil
         v = %v`, vv))
 	}
-
-	t.Fail()
+	f()
 	return false
 }
 
@@ -106,7 +105,7 @@ func notNil(t *testing.T, v interface{}, f func()) bool {
 		return true
 	}
 	log(2, fmt.Sprintf(`is nil`))
-	t.Fail()
+	f()
 	return false
 }
 

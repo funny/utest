@@ -17,4 +17,6 @@ func Test_All(t *testing.T) {
 	Equal(t, []int{1, 2, 3}, []int{3, 4, 5})
 	DeepEqual(t, []int{1, 2, 3}, []int{3, 4, 5})
 	Equal(t, int32(100), 100)
+	IsNilNow(t, 111)
+	IsNilNow(t, 222)
 }
