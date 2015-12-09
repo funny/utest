@@ -158,7 +158,7 @@ func equal(t *testing.T, a, b interface{}, f func()) bool {
 	case int64:
 		ok = va == int64Val(b)
 	case uint:
-		ok = uint64(va) == uint64Val(b)
+		ok = va == uintVal(b)
 	case uint8:
 		ok = va == uint8Val(b)
 	case uint16:
@@ -294,6 +294,18 @@ func int64Val(b interface{}) int64 {
 		return int64(v)
 	}
 	panic("can't convert to int64 value")
+}
+
+func uintVal(b interface{}) uint {
+	switch v := b.(type) {
+	case int:
+		if 0 <= v {
+			return uint(v)
+		}
+	case uint:
+		return uint(v)
+	}
+	panic("can't convert to uint value")
 }
 
 func uint64Val(b interface{}) uint64 {
