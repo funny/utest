@@ -197,6 +197,8 @@ func equal(t *testing.T, a, b interface{}, f func()) bool {
 		ok = unsafeEqual(a, b.([]float64), sizeOfFloat64)
 	case Equals:
 		ok = va.Equals(b)
+	default:
+		ok = reflect.DeepEqual(a, b)
 	}
 	if ok {
 		return true
