@@ -57,7 +57,7 @@ func check(t *testing.T, condition bool, tp string, f func(), args ...interface{
 			buf.WriteByte('\n')
 		}
 	}
-	log(1, fmt.Sprintf(buf.String(), args...))
+	log(2, fmt.Sprintf(buf.String(), args...))
 	f()
 	return false
 }
